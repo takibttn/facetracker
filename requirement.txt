@@ -1,0 +1,14 @@
+# Core dependencies
+opencv-python>=4.5.0
+numpy>=1.19.0
+pillow>=8.0.0
+PyQt5>=5.15.0
+
+# Face detection and recognition
+mtcnn>=0.1.0
+
+# Firebase integration
+firebase-admin>=5.0.0
+
+# Image processing and utilities
+scipy>=1.6.0

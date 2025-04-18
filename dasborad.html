@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qareeb Manager Dashboard - Person Recognition System</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f3f2ef;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Header Section */
+        .top-nav {
+            background-color: #283593;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            height: 52px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .logo-search {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 34px;
+            height: 34px;
+            margin-right: 8px;
+        }
+
+        .search-box {
+            background-color: #3f51b5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            height: 34px;
+            width: 280px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 8px;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #b4c0e4;
+        }
+
+        .search-icon {
+            color: white;
+            margin-right: 5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            margin: 0 12px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .nav-text {
+            font-size: 12px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e53935;
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #9fa8da;
+            margin-right: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 225px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .profile-card {
+            background-image: linear-gradient(to right, #3949ab, #5c6bc0);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .company-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: white;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .company-logo .letter {
+            font-size: 36px;
+            font-weight: bold;
+            color: #3949ab;
+        }
+
+        .company-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .company-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar-item.active {
+            background-color: #e8eaf6;
+            border-left: 3px solid #3949ab;
+        }
+
+        .sidebar-icon {
+            margin-right: 12px;
+            color: #666;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Main Dashboard */
+        .dashboard {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Metrics Section */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .metric-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+        }
+
+        .metric-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-number.green {
+            color: #4caf50;
+        }
+
+        .metric-number.red {
+            color: #f44336;
+        }
+
+        .metric-number.blue {
+            color: #2196f3;
+        }
+
+        .metric-number.purple {
+            color: #673ab7;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Camera Feed Section */
+        .camera-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .camera-feed {
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .camera-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .recognition-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(57, 73, 171, 0.8);
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            background-color: #3949ab;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .control-btn:hover {
+            background-color: #5c6bc0;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 300px;
+        }
+
+        .recognition-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
+        }
+
+        .log-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e8eaf6;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #3949ab;
+        }
+
+        .log-details {
+            flex: 1;
+        }
+
+        .log-name {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .log-info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .log-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Employee Presence Table */
+        .presence-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .presence-table th {
+            text-align: left;
+            padding: 12px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+        }
+
+        .presence-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-present {
+            background-color: #4caf50;
+        }
+
+        .status-absent {
+            background-color: #f44336;
+        }
+
+        .status-late {
+            background-color: #ff9800;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                width: 100%;
+            }
+
+            .metrics-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .camera-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="logo-search">
+                <div class="logo">Q</div>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search...">
+                </div>
+            </div>
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Network</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">Jobs</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span class="notification-badge">3</span>
+                    <span class="nav-text">Messaging</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">🔔</span>
+                    <span class="notification-badge">5</span>
+                    <span class="nav-text">Notifications</span>
+                </div>
+            </div>
+            <div class="profile-menu">
+                <div class="avatar"></div>
+                <span class="nav-text">Me ▼</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <div class="profile-card">
+                    <div class="company-logo">
+                        <span class="letter">Q</span>
+                    </div>
+                    <div class="company-name">Qareeb</div>
+                    <div class="company-tagline">Revolutionizing Project Monitoring with Edge Computing</div>
+                </div>
+                <div class="sidebar-menu">
+                    <div class="sidebar-item active">
+                        <span class="sidebar-icon">📊</span>
+                        <span class="sidebar-text">Dashboard</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">📹</span>
+                        <span class="sidebar-text">Camera Feeds</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">👥</span>
+                        <span class="sidebar-text">Employees</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">📋</span>
+                        <span class="sidebar-text">Attendance</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">⚙️</span>
+                        <span class="sidebar-text">System Settings</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">📝</span>
+                        <span class="sidebar-text">Reports</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span class="sidebar-icon">🚨</span>
+                        <span class="sidebar-text">Alerts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Area -->
+            <div class="dashboard">
+                <!-- Metrics Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Personnel Monitoring Overview</div>
+                        <div class="card-actions">
+                            <span>Last update: Today, 14:45</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-container">
+                            <div class="metric-card">
+                                <div class="metric-number green">42</div>
+                                <div class="metric-label">Present Employees</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-number red">3</div>
+                                <div class="metric-label">Absent Employees</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-number blue">5</div>
+                                <div class="metric-label">Late Arrivals</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-number purple">8</div>
+                                <div class="metric-label">Suspicious Activities</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Camera Feeds Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Person Recognition System</div>
+                        <div class="card-actions">
+                            <button class="control-btn">View All Cameras</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="camera-grid">
+                            <div class="camera-feed">
+                                <div class="camera-title">Main Entrance</div>
+                                <div class="recognition-status">4 People Detected</div>
+                            </div>
+                            <div class="camera-feed">
+                                <div class="camera-title">Development Department</div>
+                                <div class="recognition-status">12 People Detected</div>
+                            </div>
+                            <div class="camera-feed">
+                                <div class="camera-title">AI Research Lab</div>
+                                <div class="recognition-status">7 People Detected</div>
+                            </div>
+                            <div class="camera-feed">
+                                <div class="camera-title">Meeting Room A</div>
+                                <div class="recognition-status">5 People Detected</div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-panel">
+                            <button class="control-btn">Export Data</button>
+                            <button class="control-btn">Review Alerts</button>
+                            <button class="control-btn">System Settings</button>
+                            <button class="control-btn">Add Camera</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employee Presence Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Today's Employee Presence</div>
+                        <div class="card-actions">
+                            <button class="control-btn">Export Report</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="presence-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Check-in Time</th>
+                                    <th>Location</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ahmed Bensaid</td>
+                                    <td>Development</td>
+                                    <td><span class="status-indicator status-present"></span> Present</td>
+                                    <td>08:30 AM</td>
+                                    <td>Development Department</td>
+                                    <td><a href="#">View Details</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Sarah Taleb</td>
+                                    <td>AI Research</td>
+                                    <td><span class="status-indicator status-present"></span> Present</td>
+                                    <td>08:45 AM</td>
+                                    <td>AI Research Lab</td>
+                                    <td><a href="#">View Details</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Karim Hadj</td>
+                                    <td>Management</td>
+                                    <td><span class="status-indicator status-late"></span> Late</td>
+                                    <td>09:30 AM</td>
+                                    <td>Main Entrance</td>
+                                    <td><a href="#">View Details</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Leila Mansour</td>
+                                    <td>Development</td>
+                                    <td><span class="status-indicator status-absent"></span> Absent</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td><a href="#">View Details</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Omar Benali</td>
+                                    <td>Customer Support</td>
+                                    <td><span class="status-indicator status-present"></span> Present</td>
+                                    <td>08:15 AM</td>
+                                    <td>Support Center</td>
+                                    <td><a href="#">View Details</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <!-- Recognition Log -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Recognition Log</div>
+                        <div class="card-actions">
+                            <span>Live</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="recognition-log">
+                            <div class="log-item">
+                                <div class="log-avatar">KH</div>
+                                <div class="log-details">
+                                    <div class="log-name">Karim Hadj</div>
+                                    <div class="log-info">Entered Main Entrance</div>
+                                </div>
+                                <div class="log-time">9:30 AM</div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-avatar">MT</div>
+                                <div class="log-details">
+                                    <div class="log-name">Mohamed Toumi</div>
+                                    <div class="log-info">Left AI Research Lab</div>
+                                </div>
+                                <div class="log-time">9:22 AM</div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-avatar">FZ</div>
+                                <div class="log-details">
+                                    <div class="log-name">Fatima Zahra</div>
+                                    <div class="log-info">Entered Meeting Room A</div>
+                                </div>
+                                <div class="log-time">9:15 AM</div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-avatar">AB</div>
+                                <div class="log-details">
+                                    <div class="log-name">Ali Badawi</div>
+                                    <div class="log-info">Left Development Department</div>
+                                </div>
+                                <div class="log-time">9:10 AM</div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-avatar">ST</div>
+                                <div class="log-details">
+                                    <div class="log-name">Sarah Taleb</div>
+                                    <div class="log-info">Entered AI Research Lab</div>
+                                </div>
+                                <div class="log-time">8:45 AM</div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-avatar">AB</div>
+                                <div class="log-details">
+                                    <div class="log-name">Ahmed Bensaid</div>
+                                    <div class="log-info">Entered Development Department</div>
+                                </div>
+                                <div class="log-time">8:30 AM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <div class="card-title">System Status</div>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>AI Recognition Service</span>
+                                <span style="color: #4caf50;">Online</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background-color: #e0e0e0; border-radius: 3px;">
+                                <div style="width: 98%; height: 100%; background-color: #4caf50; border-radius: 3px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Camera Network</span>
+                                <span style="color: #4caf50;">Stable</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background-color: #e0e0e0; border-radius: 3px;">
+                                <div style="width: 95%; height: 100%; background-color: #2196f3; border-radius: 3px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Storage Capacity</span>
+                                <span style="color: #ff9800;">72% Used</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background-color: #e0e0e0; border-radius: 3px;">
+                                <div style="width: 72%; height: 100%; background-color: #ff9800; border-radius: 3px;"></div>
+                            </div>
+                        </div>
+                        <button class="control-btn" style="width: 100%;">View Detailed Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
